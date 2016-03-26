@@ -1,6 +1,6 @@
 /* Main controller definition */
 
-function AppController($scope, stockService) {
+function AppController($scope, stockService, syncService) {
     
   var self = this;
     
@@ -14,4 +14,4 @@ function AppController($scope, stockService) {
 
 /* End main controller definition */
 
-var app = angular.module('mainModule', []).controller('AppController', ['$scope','stockService', AppController]);
+var app = angular.module('mainModule', []).controller('AppController', ['$scope','stockService','syncService', AppController]);
