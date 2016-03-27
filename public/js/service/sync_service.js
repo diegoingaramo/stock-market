@@ -1,32 +1,11 @@
-var syncService = function($http) {
+var syncService = function($websocket, $http, $rootScope, stockService) {
     
   var self = this;
   var ws;
     
-  self.syncData = function(){
-      connect();
-  };
-    
-  /* private functions */  
+  self.refs = [];
   
-  var connect = function() {
-      
-    ws = new WebSocket(getUrl());
-      
-    ws.onopen = function(e) {
-        console.log('Connection to server opened');
-    };
-      
-    ws.onmessage = function(e) {
-        var data = JSON.parse(e.data);
-        console.log(data);
-    };
-      
-    ws.onclose = function() {
-        ws = null;
-    };
-      
-  }
+  /* private functions */  
     
   var getUrl = function(){
       var loc = window.location, new_uri;
@@ -40,6 +19,28 @@ var syncService = function($http) {
       return new_uri
   };
     
+  // Open a WebSocket connection
+  ws = $websocket(getUrl());
+    
+  ws.onMessage(function(message) {
+      
+    //update stock
+    JSON.parse(message.data).forEach(function(stock, index, array){
+        self.refs.push(stock);
+        cleanChart('chart-div');
+        stockService.searchStockInfo(stock.id).then(function(data){
+            addSeries('chart-div',stock.id,data);
+        },function(reason) {
+            console.log(reason); // Error!
+        });
+    });
+      
+  });
+    
+  ws.onclose = function() {
+    ws = null;
+  };
+      
 };
 
 

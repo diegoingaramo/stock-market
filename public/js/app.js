@@ -4,9 +4,10 @@ function AppController($scope, stockService, syncService) {
     
   var self = this;
     
+  $scope.stocks = syncService.refs;
+    
   $scope.init = function() {
       createChart('chart-div');
-      syncService.syncData();
   }
         
   $scope.init();
@@ -15,4 +16,4 @@ function AppController($scope, stockService, syncService) {
 
 /* End main controller definition */
 
-var app = angular.module('mainModule', []).controller('AppController', ['$scope','stockService','syncService', AppController]);
+var app = angular.module('mainModule', ['ngWebSocket']).controller('AppController', ['$scope','stockService','syncService', AppController]);

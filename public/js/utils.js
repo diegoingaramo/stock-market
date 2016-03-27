@@ -42,3 +42,17 @@ function createChart(containerID) {
         series: []
     });
 }
+
+function addSeries(containerID, name, data){
+    var chart =  $("#" + containerID).highcharts();
+    chart.addSeries({                        
+        name: name,
+        data: data
+    });
+}
+
+function cleanChart(containerID){
+    var chart =  $("#" + containerID).highcharts();
+    while(chart.series.length > 0)
+        chart.series[0].remove(true);
+}

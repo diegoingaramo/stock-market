@@ -1,7 +1,9 @@
 var uuid = require('node-uuid');
+var yahooFinance = require('yahoo-finance');
+
 var clients = [];
 
-var refs = ["goog", "f", "aapl", "msft"];
+var refs = ["aapl", "msft"];
 
 wss.on('connection', function connection(ws) {
     
@@ -9,11 +11,21 @@ wss.on('connection', function connection(ws) {
   clients.push({"id": client_uuid, "ws": ws});
   console.log('client [%s] connected', client_uuid);
     
-  /*ws.on('message', function incoming(message) {
-    console.log('received: %s', message);
-  });*/
-
-  ws.send(JSON.stringify(refs));
+  var data = [];
+  refs.forEach(function (stockName, index, array){
+    yahooFinance.snapshot({
+      symbol: stockName.toUpperCase(),
+      fields: ['s', 'n', 'd1', 'l1', 'y', 'r']
+    }, function (err, snapshot) {
+        console.log(snapshot);
+        data.push({id: stockName.toUpperCase(), description: snapshot.name});
+        
+        if (index == array.length - 1)
+            ws.send(JSON.stringify(data));
+    });    
+  });
+  
+        
 });
 
 wss.on('close', function() {
