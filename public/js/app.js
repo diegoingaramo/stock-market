@@ -6,6 +6,7 @@ function AppController($scope, stockService, syncService) {
     
   $scope.init = function() {
       createChart('chart-div');
+      syncService.syncData();
   }
         
   $scope.init();

@@ -4,9 +4,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var WebSocketServer = require('ws').Server;
 
 var routes = require('./routes/index');
 var stock = require('./routes/stock');
+
 
 var app = express();
 
