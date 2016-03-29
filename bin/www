@@ -28,7 +28,9 @@ var server = http.createServer(app);
 WebSocketServer = require('ws').Server;
 wss = new WebSocketServer({ server: server });
 
-require('../service/sync_service.js');
+var sync_service = require('../service/sync_service.js');
+
+sync_service.initialize();
 
 /**
  * Listen on provided port, on all network interfaces.

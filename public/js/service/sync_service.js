@@ -25,6 +25,7 @@ var syncService = function($websocket, $http, $rootScope, stockService) {
   ws.onMessage(function(message) {
       
     //update stock
+    self.refs.length = 0;
     JSON.parse(message.data).forEach(function(stock, index, array){
         self.refs.push(stock);
         cleanChart('chart-div');
@@ -34,7 +35,7 @@ var syncService = function($websocket, $http, $rootScope, stockService) {
             console.log(reason); // Error!
         });
     });
-      
+    //$rootScope.$apply();  
   });
     
   ws.onclose = function() {
